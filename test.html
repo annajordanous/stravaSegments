@@ -4,23 +4,27 @@
 	<title>Read Text File</title>
 </head>
 <body>
-	<input type="file" name="inputfile"
-			id="inputfile">
+	<input type="file" onchange="readFile(this)">
 	<br>
-	<pre id="output"></pre>
+
+	<p id="output"></p>
 	
-	<script type="text/javascript">
-		document.getElementById('inputfile')
-			.addEventListener('change', function() {
-			
-			var fr=new FileReader();
-			fr.onload=function(){
-				document.getElementById('output')
-						.textContent=fr.result;
-			}
-			
-			fr.readAsText(this.files[0]);
-		})
+	<script>
+
+	    function readFile(input, code){
+		let file = input.files[0];
+		alert(`File name: ${file.name}`); 
+		let reader = new FileReader();
+		reader.readAsText(file);
+		reader.onload = function() {
+		    document.getElementById("output").innerHTML = reader.result;
+ 		};
+		  reader.onerror = function() {
+		    document.getElementById("output").innerHTML = reader.error;
+		    console.log(reader.error);
+		};
+	    }
+
 	</script>
 </body>
 
