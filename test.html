@@ -13,9 +13,18 @@
 
 	<p id="lookup"></p>
 
-	<script>
 
-	function getStarted(input) {
+
+	<script type="module">
+
+		import SwaggerClient from 'swagger-client';
+	</script>
+	
+	
+	<script>
+	function getStarted(input) {	    
+	    
+
 	    var StravaApiV3 = require('strava_api_v3');
 	    var defaultClient = StravaApiV3.ApiClient.instance;
 
