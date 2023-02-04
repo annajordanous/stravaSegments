@@ -14,6 +14,12 @@ Access Token
 <br>
 
 
+Get local running segments	
+<div id = "segments">
+<button type="button" onclick="findLocalRunSegments()">find local run segments</button>
+</div>
+
+
 URLc
 <input type="file" name="inputfile2" id="inputfile2">
 <br>
@@ -28,7 +34,8 @@ URLc
 
 <br>
 
-<div id="results">
+<div>
+<pre id="results"></pre>
 </div>
 
 <script>
@@ -44,7 +51,7 @@ URLc
 	})
 
 
-	let urlc;
+	var urlc;
 	document.getElementById("inputfile2").addEventListener("change", function()  {
 		var frca=new FileReader();
 		frca.onload=function(){
@@ -56,22 +63,51 @@ URLc
 	})
 
 
-
 	function getMe()  {
 		var xhttp = new XMLHttpRequest(); 
 		xhttp.onreadystatechange = function() { 
 			if (this.readyState == 4 && this.status == 200) { 
-				document.getElementById("results").innerHTML = this.responseText; 
+			   var res = JSON.parse(this.responseText);
+			   outputResults(res);
 			}
 		};
 		
-
 		xhttp.open("GET", urlc, true); 
 		xhttp.setRequestHeader("Content-Type", "application/json");
 		xhttp.setRequestHeader("Authorization", "Bearer "+cs);
 		xhttp.send();	
 
 	}
+
+	function outputResults(res)  {
+	   
+	   document.getElementById("results").innerHTML = JSON.stringify(res, null, 2); 
+	}
+
+
+
+	function findLocalRunSegments() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition);
+		} else {
+			document.getElementById("results").innerHTML = "Geolocation not supported by browser";
+		}
+	}
+
+	function showPosition(position) {
+		var lat = position.coords.latitude;
+		var long = position.coords.longitude;
+	
+		var url_start = "https://www.strava.com/api/v3/segments/explore?bounds=";
+		var url_end = "&activity_type=running";
+
+		bounds = (lat-0.05)+","+(long-0.05)+","+(lat+0.05)+","+(long+0.05)
+
+		urlc = url_start + bounds + url_end;
+		getMe();
+
+}
+
 
 </script>
 
