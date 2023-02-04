@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Strava stuff</title>
+</head>
+<body>
+
+<h2>Strava stuff </h2>
+
+Access Token
+<input type="file" name="inputfile" id="inputfile">
+<br>
+<pre id="output"></pre>
+<br>
+
+
+URLc
+<input type="file" name="inputfile2" id="inputfile2">
+<br>
+<pre id="output2"></pre>
+<br>
+
+
+<div id="test">
+<button type="button" onclick="getMe()">get me</button>
+</div>
+
+
+<br>
+
+<div id="results">
+</div>
+
+<script>
+	let cs;
+	document.getElementById("inputfile").addEventListener("change", function()  {
+		var frcs=new FileReader();
+		frcs.onload=function(){
+			cs = frcs.result.trim();
+			document.getElementById("output").textContent=cs;
+		}
+
+		frcs.readAsText(this.files[0]);
+	})
+
+
+	let urlc;
+	document.getElementById("inputfile2").addEventListener("change", function()  {
+		var frca=new FileReader();
+		frca.onload=function(){
+			urlc = frca.result.trim();
+			document.getElementById("output2").textContent=urlc;
+		}
+
+		frca.readAsText(this.files[0]);
+	})
+
+
+
+	function getMe()  {
+		var xhttp = new XMLHttpRequest(); 
+		xhttp.onreadystatechange = function() { 
+			if (this.readyState == 4 && this.status == 200) { 
+				document.getElementById("results").innerHTML = this.responseText; 
+			}
+		};
+		
+
+		xhttp.open("GET", urlc, true); 
+		xhttp.setRequestHeader("Content-Type", "application/json");
+		xhttp.setRequestHeader("Authorization", "Bearer "+cs);
+		xhttp.send();	
+
+	}
+
+</script>
+
+</body>
+
+</html>                
